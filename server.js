@@ -1,4 +1,5 @@
 const { response } = require("express");
+
 // server.js
 // This is where your node app starts
 
@@ -18,6 +19,35 @@ app.get("/", function (request, response) {
 });
 
 //START OF YOUR CODE...
+app.get('/quotes', function(request, response) {
+  response.send(quotes)
+});
+
+app.get('/quotes/random', function(request, response) {
+  const randomQuotes = pickFromArray (quotes);
+  response.send(randomQuotes)
+});
+
+app.get('/quotes/search', (req, res) => {
+  quotes.forEach((element) => {
+  const termQuery = req.query.term.toLowerCase();
+  const search = quotes.filter((element) => element.quote.toLowerCase().includes(termQuery));
+  res.send(search);})
+})
+ 
+/*como lo hizo el profe
+      //app.get ("/quotes/Search", function (request, response)
+      //{
+      //let searchQuery =request.query.term;
+      //console.log(searchQuery);
+      //let result =   []
+  //For (const obj of quotes)  {
+    if (obj.quote.toLowerCase().includes(searchQuery.toLowerCase())){
+      result.push(obj);
+    }
+  }
+  response.send (result)
+})fin*/
 
 //...END OF YOUR CODE
 
@@ -26,7 +56,10 @@ app.get("/", function (request, response) {
 //example: pickFromArray(myContactsArray)
 //
 function pickFromArray(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+  const random=Math.random()* arr.length
+  const randomIndex = Math.floor(random);
+
+  return arr[randomIndex];
 }
 
 //Start our server so that it listens for HTTP requests!
